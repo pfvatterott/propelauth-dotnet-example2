@@ -11,13 +11,7 @@ using System.Threading.Tasks;
 
 var rsa = RSA.Create();
 rsa.ImportFromPem(@"-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1DsxqIjXqM0i5PL6kFVa
-280S3gl96n2YlO6l9ss2XD/GOoDM11LxnwlIBWFXeRGhOVi4dp2pefY4Bh2rg4Z8
-/Nq1Jx+N2uaEk7KH7qcU3uxZT1hr2pp+lEn3VAuAhGg5ReoYkNyYLRh5lhIm2n9g
-vI1SCHE+1OJ6o6jh1xFT2BIHE/oFEOl+Q5tp83Fz26ucrotFTAYKvQgNkVGUSuIT
-CkMk5p7YDaEGd1JYz9R6Upawbjte72mDskm+udYUWlI25j9Cxlv8lH0KWwqPlue6
-cZy3qiTrrLb7NGKFg2zA2J45glXXbwKuDDtURkVaI2LckZ+gF7dld98tcyitNlWR
-bQIDAQAB
+
 -----END PUBLIC KEY-----
 ");
 
