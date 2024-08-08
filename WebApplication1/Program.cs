@@ -60,6 +60,14 @@ app.MapGet("/", async (ClaimsPrincipal user) =>
 })
 .RequireAuthorization("RequireLogin");
 
+
+
+app.MapGet("/api/org/{orgId}", async (ClaimsPrincipal user, string orgId) =>
+{
+    return $"Hello user with ID {user.FindFirst("user_id")} from org {orgId}";
+})
+.RequireAuthorization("RequireCanViewBillingPermission");
+
 // app.MapGet("/api/org/{orgId}", async (ClaimsPrincipal user, string orgId) =>
 // {
 //     var client = new HttpClient();
@@ -94,12 +102,6 @@ app.MapGet("/", async (ClaimsPrincipal user) =>
 // .RequireAuthorization("RequireRole", "Admin");
 
 
-app.MapGet("/api/org/{orgId}", async (ClaimsPrincipal user, string orgId) =>
-{
-    return $"Hello user with ID {user.FindFirst("user_id")} from org {orgId}";
-})
-.RequireAuthorization("RequireCanViewBillingPermission");
-
 app.Run();
 
 public class RequiredAuthenticationHandler : AuthorizationHandler<RequiredAuthentication>
@@ -132,7 +134,7 @@ public class RequireRoleHandler : AuthorizationHandler<RequireRole>
         var orgsClaim = context.User.FindFirst("org_id_to_org_member_info");
         if (orgsClaim != null)
         {
-            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgInfo>>(orgsClaim.Value);
+            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgMemberInfo>>(orgsClaim.Value);
             var targetOrg = orgs.FirstOrDefault(o => o.Key == orgId);
             if (targetOrg.Value != null)
             {
@@ -161,9 +163,10 @@ public class RequiredOrgMembershipHandler : AuthorizationHandler<RequiredOrgMemb
         var routeValues = _httpContextAccessor.HttpContext.GetRouteData().Values;
         var orgId = routeValues["orgId"]?.ToString();
         var orgsClaim = context.User.FindFirst("org_id_to_org_member_info");
+
         if (orgsClaim != null)
         {
-            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgInfo>>(orgsClaim.Value);
+            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgMemberInfo>>(orgsClaim.Value);
             var targetOrg = orgs.FirstOrDefault(o => o.Key == orgId);
             if (targetOrg.Value != null)
             {
@@ -191,7 +194,7 @@ public class RequirePermissionHandler : AuthorizationHandler<RequirePermission>
         var orgsClaim = context.User.FindFirst("org_id_to_org_member_info");
         if (orgsClaim != null)
         {
-            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgInfo>>(orgsClaim.Value);
+            var orgs = JsonConvert.DeserializeObject<Dictionary<string, OrgMemberInfo>>(orgsClaim.Value);
             var targetOrg = orgs.FirstOrDefault(o => o.Key == orgId);
             if (targetOrg.Value != null)
             {
@@ -205,12 +208,17 @@ public class RequirePermissionHandler : AuthorizationHandler<RequirePermission>
     }
 }
 
-public class OrgInfo
+public class OrgMemberInfo
 {
     public string org_id { get; set; }
     public string org_name { get; set; }
-    public List<string> user_permissions { get; set; }
+    public string url_safe_org_name { get; set; }
+    public Dictionary<string, object> org_metadata { get; set; }
     public string user_role { get; set; }
+    public List<string> inherited_user_roles_plus_current_role { get; set; }
+    public string org_role_structure { get; set; }
+    public List<string> additional_roles { get; set; }
+    public List<string> user_permissions { get; set; }
 }
 
 public class RequiredAuthentication : IAuthorizationRequirement

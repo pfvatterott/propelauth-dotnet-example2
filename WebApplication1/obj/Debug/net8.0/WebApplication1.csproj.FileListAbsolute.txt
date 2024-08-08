@@ -40,3 +40,4 @@
 /Users/paulvatterott/Documents/GitHub/propelauth-dotnet-example2/WebApplication1/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
 /Users/paulvatterott/Documents/GitHub/propelauth-dotnet-example2/WebApplication1/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
 /Users/paulvatterott/Documents/GitHub/propelauth-dotnet-example2/WebApplication1/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/paulvatterott/Documents/GitHub/propelauth-dotnet-example2/WebApplication1/obj/Debug/net8.0/WebApplication1.sourcelink.json
